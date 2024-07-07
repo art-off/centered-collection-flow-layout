@@ -19,6 +19,9 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         super.viewDidLoad()
 
         title = "Zoomed & snapped cells"
+        
+        flowLayout.delegate = self
+        
         addCollectionView()
         addHelpersViews()
     }
@@ -56,8 +59,8 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         view50Width1.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(view50Width1)
         NSLayoutConstraint.activate([
-            view50Width1.widthAnchor.constraint(equalToConstant: 50),
-            view50Width1.heightAnchor.constraint(equalToConstant: 50),
+            view50Width1.widthAnchor.constraint(equalToConstant: 30),
+            view50Width1.heightAnchor.constraint(equalToConstant: 30),
             view50Width1.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
             view50Width1.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
         ])
@@ -67,8 +70,8 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         view50Width2.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(view50Width2)
         NSLayoutConstraint.activate([
-            view50Width2.widthAnchor.constraint(equalToConstant: 50),
-            view50Width2.heightAnchor.constraint(equalToConstant: 50),
+            view50Width2.widthAnchor.constraint(equalToConstant: 30),
+            view50Width2.heightAnchor.constraint(equalToConstant: 30),
             view50Width2.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
             view50Width2.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
         ])
@@ -83,6 +86,29 @@ class ViewController: UIViewController, UICollectionViewDataSource {
             centerLineView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
             centerLineView.widthAnchor.constraint(equalToConstant: 3),
         ])
+    }
+}
+
+extension ViewController: CenteredCollectionFlowLayoutDelegate {
+    
+    static let sizes: [CGSize] = [
+        CGSize(width: 100, height: 100),
+        CGSize(width: 250, height: 200),
+        CGSize(width: 200, height: 300),
+        CGSize(width: 50, height: 200),
+        CGSize(width: 200, height: 300),
+        CGSize(width: 20, height: 150),
+        CGSize(width: 50, height: 100),
+        CGSize(width: 50, height: 100),
+        CGSize(width: 50, height: 100),
+    ]
+    
+    func centeredCollecitonFlowLayout(sizeFor indexPath: IndexPath) -> CGSize {
+        Self.sizes[indexPath.item]
+    }
+    
+    func centeredCollectionFlowLayoutOffsetConstant() -> CGFloat {
+        30
     }
 }
 

@@ -7,20 +7,22 @@
 
 import UIKit
 
+protocol CenteredCollectionFlowLayoutDelegate: AnyObject {
+    
+    func centeredCollecitonFlowLayout(sizeFor indexPath: IndexPath) -> CGSize
+    
+    func centeredCollectionFlowLayoutOffsetConstant() -> CGFloat
+}
+
 class CenteredCollectionFlowLayout: UICollectionViewLayout {
+    
+    // Dependencies
+    public weak var delegate: CenteredCollectionFlowLayoutDelegate?
     
     // MARK: - Properties
     
     // Cached layout attributes
     private var layoutAttributes: [UICollectionViewLayoutAttributes] = []
-    
-    private let stubContentSizes: [CGSize] = [
-        CGSize(width: 150, height: 480),
-        CGSize(width: 120, height: 480),
-        CGSize(width: 50, height: 300),
-        CGSize(width: 200, height: 300),
-    ]
-    private let offsetConstant: CGFloat = 50
     
     // MARK: - Content Size
     
@@ -47,7 +49,7 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
     override func prepare() {
         super.prepare()
 
-        guard let collectionView else { return }
+        guard let collectionView, let delegate else { return }
         
         collectionView.decelerationRate = .fast
         
@@ -56,10 +58,13 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
         
         layoutAttributes = []
         
-        for item in 0..<stubContentSizes.count {
-            let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(row: item, section: 0))
+        for item in 0..<collectionView.numberOfItems(inSection: 0) {
+            let indexPath = IndexPath(row: item, section: 0)
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             
-            let itemSize = stubContentSizes[item]
+            let offset = delegate.centeredCollectionFlowLayoutOffsetConstant()
+            
+            let itemSize = delegate.centeredCollecitonFlowLayout(sizeFor: indexPath)
             attributes.size = itemSize
             
             if let prevAttributes = layoutAttributes.last {
@@ -69,12 +74,12 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
                     x: prevAttributes.frame.origin.x
                         + (prevAttributes.size.width / 2)
                         + (collectionViewWidth / 2)
-                        - offsetConstant,
+                        - offset,
                     y: collectionViewHeight - itemSize.height
                 )
                 
                 let adjustedXCenter = attributes.center.x - collectionView.contentOffset.x
-                // 0 – в начале коллекции; 1 – в конце коллекции
+                // >0 – за началом коллекции; 0 – в начале коллекции; 1 – в конце коллекции; <1 – за концом коллекции.
                 let normalizedXCenter = adjustedXCenter / collectionViewWidth
                 
                 if normalizedXCenter < 1 {
@@ -99,9 +104,9 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
     }
     
     private func space(by width: CGFloat) -> CGFloat {
-        guard let collectionView else { return .zero }
+        guard let collectionView, let delegate else { return .zero }
         
-        return (collectionView.bounds.width - width - 2 * offsetConstant) / 2
+        return (collectionView.bounds.width - width - 2 * delegate.centeredCollectionFlowLayoutOffsetConstant()) / 2
     }
     
     // MARK: - Layout Attributes
@@ -128,8 +133,9 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
             abs($0 - targetXCenter) < abs($1 - targetXCenter)
         }
         
-        return closestCenter.map { CGPoint(x: $0 - collectionView.bounds.width / 2, y: proposedContentOffset.y) }
-            ?? proposedContentOffset
+        guard let closestCenter else { return proposedContentOffset }
+        
+        return CGPoint(x: closestCenter - collectionView.bounds.width / 2, y: proposedContentOffset.y)
     }
     
     // MARK: - Layout invalidations
