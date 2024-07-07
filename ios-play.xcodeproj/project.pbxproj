@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA8EBF192C3A756C0060C49B /* CenteredCollectionFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8EBF182C3A756C0060C49B /* CenteredCollectionFlowLayout.swift */; };
 		FAEA7ADC2C36E3AF002F20FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA7ADB2C36E3AF002F20FA /* AppDelegate.swift */; };
 		FAEA7ADE2C36E3AF002F20FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA7ADD2C36E3AF002F20FA /* SceneDelegate.swift */; };
 		FAEA7AE02C36E3AF002F20FA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA7ADF2C36E3AF002F20FA /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FA8EBF182C3A756C0060C49B /* CenteredCollectionFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredCollectionFlowLayout.swift; sourceTree = "<group>"; };
 		FAEA7AD82C36E3AF002F20FA /* ios-play.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-play.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAEA7ADB2C36E3AF002F20FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FAEA7ADD2C36E3AF002F20FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				FAEA7AE42C36E3B2002F20FA /* Assets.xcassets */,
 				FAEA7AE62C36E3B2002F20FA /* LaunchScreen.storyboard */,
 				FAEA7AE92C36E3B2002F20FA /* Info.plist */,
+				FA8EBF182C3A756C0060C49B /* CenteredCollectionFlowLayout.swift */,
 			);
 			path = "ios-play";
 			sourceTree = "<group>";
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAEA7AE02C36E3AF002F20FA /* ViewController.swift in Sources */,
+				FA8EBF192C3A756C0060C49B /* CenteredCollectionFlowLayout.swift in Sources */,
 				FAEA7ADC2C36E3AF002F20FA /* AppDelegate.swift in Sources */,
 				FAEA7ADE2C36E3AF002F20FA /* SceneDelegate.swift in Sources */,
 			);
