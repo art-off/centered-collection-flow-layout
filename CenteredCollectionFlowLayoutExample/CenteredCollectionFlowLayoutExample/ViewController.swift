@@ -1,17 +1,18 @@
 //
 //  ViewController.swift
-//  ios-play
+//  CenteredCollectionFlowLayoutExample
 //
-//  Created by Artem Rylov on 04.07.2024.
+//  Created by Artem Rylov on 02.03.2025.
 //
 
 import UIKit
+import CenteredCollectionFlowFayout
 
 class ViewController: UIViewController, UICollectionViewDataSource {
-    
+
     // Views
     private var collectionView: UICollectionView!
-    
+
     // Dependencies
     let flowLayout = CenteredCollectionFlowLayout()
 
@@ -19,9 +20,9 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         super.viewDidLoad()
 
         title = "Zoomed & snapped cells"
-        
+
         flowLayout.delegate = self
-        
+
         addCollectionView()
         addHelpersViews()
     }
@@ -35,7 +36,7 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? .red : .yellow
         return cell
     }
-    
+
     private func addCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         view.addSubview(collectionView)
@@ -52,30 +53,30 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         collectionView.contentInsetAdjustmentBehavior = .always
         collectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     }
-    
+
     private func addHelpersViews() {
-        let view50Width1 = UIView()
-        view50Width1.backgroundColor = .green
-        view50Width1.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(view50Width1)
+        let leadingSquareView1 = UIView()
+        leadingSquareView1.backgroundColor = .green
+        leadingSquareView1.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(leadingSquareView1)
         NSLayoutConstraint.activate([
-            view50Width1.widthAnchor.constraint(equalToConstant: 30),
-            view50Width1.heightAnchor.constraint(equalToConstant: 30),
-            view50Width1.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
-            view50Width1.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
+            leadingSquareView1.widthAnchor.constraint(equalToConstant: Self.offset),
+            leadingSquareView1.heightAnchor.constraint(equalToConstant: Self.offset),
+            leadingSquareView1.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+            leadingSquareView1.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
         ])
-        
-        let view50Width2 = UIView()
-        view50Width2.backgroundColor = .green
-        view50Width2.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(view50Width2)
+
+        let trailingSquareView1 = UIView()
+        trailingSquareView1.backgroundColor = .green
+        trailingSquareView1.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(trailingSquareView1)
         NSLayoutConstraint.activate([
-            view50Width2.widthAnchor.constraint(equalToConstant: 30),
-            view50Width2.heightAnchor.constraint(equalToConstant: 30),
-            view50Width2.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
-            view50Width2.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
+            trailingSquareView1.widthAnchor.constraint(equalToConstant: Self.offset),
+            trailingSquareView1.heightAnchor.constraint(equalToConstant: Self.offset),
+            trailingSquareView1.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
+            trailingSquareView1.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
         ])
-        
+
         let centerLineView = UIView()
         centerLineView.backgroundColor = .green
         centerLineView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,7 +91,9 @@ class ViewController: UIViewController, UICollectionViewDataSource {
 }
 
 extension ViewController: CenteredCollectionFlowLayoutDelegate {
-    
+
+    static let offset: CGFloat = 30
+
     static let sizes: [CGSize] = [
         CGSize(width: 100, height: 100),
         CGSize(width: 250, height: 200),
@@ -102,23 +105,23 @@ extension ViewController: CenteredCollectionFlowLayoutDelegate {
         CGSize(width: 50, height: 100),
         CGSize(width: 50, height: 100),
     ]
-    
+
     func centeredCollecitonFlowLayout(sizeFor indexPath: IndexPath) -> CGSize {
         Self.sizes[indexPath.item]
     }
-    
+
     func centeredCollectionFlowLayoutOffsetConstant() -> CGFloat {
-        30
+        Self.offset
     }
 }
 
 class CustomCollectionViewCell: UICollectionViewCell {
-    
+
     private let label = UILabel()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         label.numberOfLines = 0
         contentView.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -129,7 +132,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

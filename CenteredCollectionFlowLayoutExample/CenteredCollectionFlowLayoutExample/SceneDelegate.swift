@@ -1,8 +1,8 @@
 //
 //  SceneDelegate.swift
-//  ios-play
+//  CenteredCollectionFlowLayoutExample
 //
-//  Created by Artem Rylov on 04.07.2024.
+//  Created by Artem Rylov on 02.03.2025.
 //
 
 import UIKit
