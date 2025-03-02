@@ -29,13 +29,8 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
     // MARK: - Content Size
     
     override var collectionViewContentSize: CGSize {
-        guard
-            let lastElementAttributes = layoutAttributes.last,
-            let collectionView
-        else {
-            return .zero
-        }
-        
+        guard let lastElementAttributes = layoutAttributes.last, let collectionView else { return .zero }
+
         let lastElementStartX = lastElementAttributes.frame.origin.x
         let lastElementWidth = lastElementAttributes.size.width
         let lastSpaceForCenteringLastElement = (collectionView.bounds.width - lastElementAttributes.size.width) / 2
