@@ -8,9 +8,11 @@
 import UIKit
 
 protocol CenteredCollectionFlowLayoutDelegate: AnyObject {
-    
+
+    // Size for cell in indexPath
     func centeredCollecitonFlowLayout(sizeFor indexPath: IndexPath) -> CGSize
-    
+
+    // Offset by collecitonView horizontal edges
     func centeredCollectionFlowLayoutOffsetConstant() -> CGFloat
 }
 
@@ -68,9 +70,9 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
             attributes.size = itemSize
             
             if let prevAttributes = layoutAttributes.last {
-                // Это уже не первый, до него есть предыдущий
-                
-                attributes.frame.origin = .init(
+                // Non-first attribute
+
+                attributes.frame.origin = CGPoint(
                     x: prevAttributes.frame.origin.x
                         + (prevAttributes.size.width / 2)
                         + (collectionViewWidth / 2)
@@ -79,7 +81,11 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
                 )
                 
                 let adjustedXCenter = attributes.center.x - collectionView.contentOffset.x
-                // >0 – за началом коллекции; 0 – в начале коллекции; 1 – в конце коллекции; <1 – за концом коллекции.
+                // <0 – behind begin of collectionView
+                // 0 – begin of collecitonView
+                // 0.5 – center of cellectionView
+                // 1 – end of collecitonView
+                // >1 – behind end of collectionView
                 let normalizedXCenter = adjustedXCenter / collectionViewWidth
                 
                 if normalizedXCenter < 1 {
@@ -89,11 +95,11 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
                     let targetXTransform = prevSpace - currSpace
                     
                     let transformPercent = min(-(normalizedXCenter - 1) * 2, 1)
-                    prevAttributes.transform = .init(translationX: targetXTransform * transformPercent, y: 1)
+                    prevAttributes.transform = CGAffineTransform(translationX: targetXTransform * transformPercent, y: 1)
                 }
             } else {
-                // Это первый аттрибут в списке
-                attributes.frame.origin = .init(
+                // First attribute
+                attributes.frame.origin = CGPoint(
                     x: (collectionViewWidth / 2) - (itemSize.width / 2),
                     y: collectionViewHeight - itemSize.height
                 )
@@ -125,7 +131,6 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
         forProposedContentOffset proposedContentOffset: CGPoint,
         withScrollingVelocity velocity: CGPoint
     ) -> CGPoint {
-        
         guard let collectionView else { return proposedContentOffset }
         
         let targetXCenter = proposedContentOffset.x + (collectionView.bounds.width / 2)
