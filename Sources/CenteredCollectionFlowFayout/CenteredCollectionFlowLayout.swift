@@ -1,22 +1,6 @@
-//
-//  CenteredCollectionFlowLayout.swift
-//  ios-play
-//
-//  Created by Artem Rylov on 07.07.2024.
-//
-
 import UIKit
 
-protocol CenteredCollectionFlowLayoutDelegate: AnyObject {
-
-    // Size for cell in indexPath
-    func centeredCollecitonFlowLayout(sizeFor indexPath: IndexPath) -> CGSize
-
-    // Offset by collecitonView horizontal edges
-    func centeredCollectionFlowLayoutOffsetConstant() -> CGFloat
-}
-
-class CenteredCollectionFlowLayout: UICollectionViewLayout {
+public class CenteredCollectionFlowLayout: UICollectionViewLayout {
     
     // Dependencies
     public weak var delegate: CenteredCollectionFlowLayoutDelegate?
@@ -28,7 +12,7 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
     
     // MARK: - Content Size
     
-    override var collectionViewContentSize: CGSize {
+    public override var collectionViewContentSize: CGSize {
         guard let lastElementAttributes = layoutAttributes.last, let collectionView else { return .zero }
 
         let lastElementStartX = lastElementAttributes.frame.origin.x
@@ -43,7 +27,7 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
     
     // MARK: - Prepare
     
-    override func prepare() {
+    public override func prepare() {
         super.prepare()
 
         guard let collectionView, let delegate else { return }
@@ -112,17 +96,17 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
     
     // MARK: - Layout Attributes
     
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    public override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         layoutAttributes.filter { rect.intersects($0.frame) }
     }
     
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+    public override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         layoutAttributes.filter { $0.indexPath == indexPath }.first
     }
     
     // MARK: - Adjust contentOffset
         
-    override func targetContentOffset(
+    public override func targetContentOffset(
         forProposedContentOffset proposedContentOffset: CGPoint,
         withScrollingVelocity velocity: CGPoint
     ) -> CGPoint {
@@ -140,11 +124,11 @@ class CenteredCollectionFlowLayout: UICollectionViewLayout {
     
     // MARK: - Layout invalidations
     
-    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    public override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         true
     }
     
-    override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
+    public override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
         if context.invalidateEverything || context.invalidateDataSourceCounts {
             layoutAttributes = []
         }
